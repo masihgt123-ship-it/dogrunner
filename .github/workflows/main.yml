@@ -25,4 +25,5 @@ jobs:
         uses: digreatbrian/buildozer-action@v2
         with:
           python-version: "3.11"
-          buildozer-cmd: android debug
+         buildozer-cmd: buildozer android debug
+
