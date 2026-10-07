@@ -3,7 +3,7 @@
 title = DogRunner
 package.name = dogrunner
 package.domain = org.dogrunner
-version=1.0
+version = 1.0
 
 source.dir = .
 source.include_exts = py,wav
@@ -11,8 +11,9 @@ source.include_exts = py,wav
 requirements = python3,pygame
 
 orientation = landscape
-
 fullscreen = 0
+
+android.accept_sdk_license = True
 
 
 [buildozer]
