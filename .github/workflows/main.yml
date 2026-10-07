@@ -1,3 +1,4 @@
+
 name: Build APK
 
 on:
@@ -5,15 +6,23 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            git zip unzip openjdk-17-jdk \
+            python3-pip python3-venv \
+            libffi-dev libssl-dev \
+            libtinfo5
+
       - name: Build APK
         uses: digreatbrian/buildozer-action@v2
         with:
-          python_version: 3.11
-          buildozer_version: master
-          command: android debug
+          python-version: "3.11"
+          buildozer-cmd: android debug
