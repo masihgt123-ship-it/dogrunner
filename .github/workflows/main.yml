@@ -1,4 +1,3 @@
-
 name: Build APK
 
 on:
@@ -25,5 +24,6 @@ jobs:
         uses: digreatbrian/buildozer-action@v2
         with:
           python-version: "3.11"
-         buildozer-cmd: buildozer android debug
+          buildozer-cmd: buildozer android debug
+
 
