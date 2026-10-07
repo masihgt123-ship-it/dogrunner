@@ -3,6 +3,7 @@
 title = DogRunner
 package.name = dogrunner
 package.domain = org.dogrunner
+version=1.0
 
 source.dir = .
 source.include_exts = py,wav
