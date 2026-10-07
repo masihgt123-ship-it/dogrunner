@@ -24,5 +24,3 @@ jobs:
         with:
           python-version: "3.11"
           buildozer-cmd: buildozer android debug
-
-
