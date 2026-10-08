@@ -19,12 +19,8 @@ jobs:
             python3-pip python3-venv \
             libffi-dev libssl-dev
 
-          python3 -m pip install --upgrade pip
-          python3 -m pip install cython==0.29.36
-
       - name: Build APK
         uses: digreatbrian/buildozer-action@v2
         with:
           python-version: "3.11"
           buildozer-cmd: buildozer android debug
-
