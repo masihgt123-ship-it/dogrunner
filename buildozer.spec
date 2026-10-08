@@ -8,7 +8,7 @@ version = 1.0
 source.dir = .
 source.include_exts = py,wav
 
-requirements = python3,pygame==2.5.2
+requirements = python3,pygame
 
 orientation = landscape
 fullscreen = 0
