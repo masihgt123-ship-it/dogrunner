@@ -1,6 +1,6 @@
 [app]
 
-title = DogRunner
+title = Dog Runner
 package.name = dogrunner
 package.domain = org.dogrunner
 version = 1.0
@@ -12,6 +12,14 @@ requirements = python3,pygame
 
 orientation = landscape
 fullscreen = 0
+
+android.permissions = INTERNET
+
+android.api = 33
+android.minapi = 24
+android.ndk = 28c
+
+p4a.local_recipes = ./p4a-recipes
 
 android.accept_sdk_license = True
 
