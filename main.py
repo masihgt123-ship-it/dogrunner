@@ -550,36 +550,3 @@ while running:
 
 pygame.quit()
 sys.exit()
-
-    def delete_task(self, row):
-        self.task_list.remove_widget(row)
-        self.save_tasks()
-
-    def save_tasks(self):
-        tasks = []
-
-        for row in self.task_list.children:
-            label = row.children[1]
-            tasks.append(label.text)
-
-        with open(
-            os.path.join(self.user_data_dir, "tasks.json"),
-            "w"
-        ) as file:
-            json.dump(tasks, file)
-
-    def load_tasks(self):
-        path = os.path.join(
-            self.user_data_dir,
-            "tasks.json"
-        )
-
-        if os.path.exists(path):
-            with open(path, "r") as file:
-                tasks = json.load(file)
-
-            for task in reversed(tasks):
-                self.create_task(task)
-
-
-TodoApp().run() 
