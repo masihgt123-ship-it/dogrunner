@@ -1,33 +1,72 @@
-- name: Install system dependencies
-  run: |
-    sudo apt-get update
-    sudo apt-get install -y \
-      python3-pip \
-      build-essential \
-      git \
-      ffmpeg \
-      libsdl2-dev \
-      libsdl2-image-dev \
-      libsdl2-mixer-dev \
-      libsdl2-ttf-dev \
-      libportmidi-dev \
-      libswscale-dev \
-      libavformat-dev \
-      libavcodec-dev \
-      zlib1g-dev \
-      libgstreamer1.0-dev \
-      gstreamer1.0-plugins-base \
-      libmtdev-dev \
-      autoconf \
-      autoconf-archive \
-      libtool \
-      libtool-bin \
-      pkg-config \
-      cmake
+name: Build Android APK
 
-- name: Build with Buildozer
-  env:
-    ACLOCAL_PATH: /usr/share/aclocal
-  run: |
-    buildozer -v android debug 2>&1 | tee 0_build.txt
-    exit ${PIPESTATUS[0]}
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            python3-pip \
+            build-essential \
+            git \
+            ffmpeg \
+            libsdl2-dev \
+            libsdl2-image-dev \
+            libsdl2-mixer-dev \
+            libsdl2-ttf-dev \
+            libportmidi-dev \
+            libswscale-dev \
+            libavformat-dev \
+            libavcodec-dev \
+            zlib1g-dev \
+            libgstreamer1.0-dev \
+            gstreamer1.0-plugins-base \
+            libmtdev-dev \
+            autoconf \
+            autoconf-archive \
+            libtool \
+            libtool-bin \
+            pkg-config \
+            cmake
+
+      - name: Install Buildozer and dependencies
+        run: |
+          pip install --upgrade pip
+          pip install buildozer cython
+
+      - name: Build with Buildozer
+        env:
+          ACLOCAL_PATH: /usr/share/aclocal
+        run: |
+          buildozer -v android debug 2>&1 | tee 0_build.txt
+          exit ${PIPESTATUS[0]}
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        if: success()
+        with:
+          name: dogrunner-apk
+          path: bin/*.apk
+
+      - name: Upload Logs
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: build-logs
+          path: 0_build.txt
