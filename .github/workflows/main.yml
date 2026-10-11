@@ -1,6 +1,6 @@
 name: Build APK
 
-on:
+'on':
 push:
 branches:
 - main
@@ -22,4 +22,4 @@ uses: actions/checkout@v4
     uses: digreatbrian/buildozer-action@v2
     with:
       python-version: "3.11"
-      buildozer-cmd: buildozer android debug
+      buildozer-cmd: "buildozer android debug"
