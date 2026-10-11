@@ -12,21 +12,25 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install dependencies
+    - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
-        pip3 install --user --upgrade buildozer cython
+        # پکیج‌های لازم برای کامپایل کیوی و بیلدوزر بدون پکیج‌های منسوخ
+        sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev build-essential
+        # نصب بیلدوزر و سایتون (استفاده از --break-system-packages برای محیط‌های جدید اوبونتو)
+        pip3 install --upgrade pip buildozer cython --break-system-packages
 
     - name: Build with Buildozer
       run: |
+        # اطمینان از قرارگیری بیلدوزر در مسیر اجرایی
         export PATH=$PATH:~/.local/bin
-        # اجرای بیلد و تایید خودکار تمامی سوالات
+        # اجرای بیلد و تأیید خودکار سوالات (yes)
         yes | buildozer android debug
 
     - name: Upload APK
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: dogrunner-final-apk
+        name: dogrunner-apk
+        # آپلود فایل خروجی (در صورت موفقیت بیلد)
         path: bin/*.apk
