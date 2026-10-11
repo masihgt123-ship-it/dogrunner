@@ -42,15 +42,22 @@ jobs:
           autoconf \
           automake \
           libtool-bin \
-          autoconf-archive
+          pkg-config \
+          libffi-dev \
+          libssl-dev
 
     - name: Install Buildozer and dependencies
       run: |
         pip install --upgrade pip
         pip install buildozer cython
 
+    - name: Clean Environment
+      run: |
+        buildozer clean
+
     - name: Build with Buildozer
       run: |
+        set -o pipefail
         buildozer -v android debug 2>&1 | tee 0_build.txt
 
     - name: Upload APK
