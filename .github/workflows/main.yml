@@ -11,7 +11,6 @@ jobs:
     container:
       image: kivy/buildozer:latest
       options: --user root
-    # اضافه کردن این بخش برای اجازه دادن به اجرای root
     env:
       BUILDOZER_ALLOW_ROOT: 1
 
@@ -21,10 +20,9 @@ jobs:
 
     - name: Build with Buildozer
       run: |
-        # پاکسازی کش برای اطمینان از سلامت بیلد
         rm -rf .buildozer
-        # دستور ساخت
-        buildozer android debug
+        # استفاده از yes برای تأیید خودکار سوالات احتمالی buildozer
+        yes | buildozer android debug
 
     - name: Upload APK
       if: always()
