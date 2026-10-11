@@ -27,7 +27,7 @@ jobs:
           libavformat-dev libavcodec-dev zlib1g-dev libgstreamer1.0-dev \
           gstreamer1.0-plugins-base gstreamer1.0-plugins-good libtool \
           autoconf automake libtool-bin pkg-config libffi-dev libssl-dev \
-          openjdk-17-jdk autoconf-archive
+          openjdk-17-jdk autoconf-archive libltdl-dev autotools-dev
 
     - name: Install Buildozer and dependencies
       run: |
@@ -37,7 +37,7 @@ jobs:
     - name: Build with Buildozer
       run: |
         set -o pipefail
-        # حذف دستی دایرکتوری بیلد برای اطمینان از تمیز بودن محیط
+        # حذف کش برای اطمینان از پاک شدن فایل‌های معیوب قبلی
         rm -rf .buildozer
         # اجرای بیلد
         yes | buildozer -v android debug 2>&1 | tee 0_build.txt
