@@ -11,6 +11,7 @@ requirements = python3,kivy
 orientation = portrait
 fullscreen = 0
 android.presplash_color = #FFFFFF
+android.python_version = 3.11
 
 [buildozer]
 log_level = 2
