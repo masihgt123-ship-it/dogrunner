@@ -3,6 +3,8 @@ name: Build Android APK
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -16,7 +18,7 @@ jobs:
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install system dependencies
         run: |
@@ -35,44 +37,54 @@ jobs:
             libavformat-dev \
             libavcodec-dev \
             zlib1g-dev \
-            libmtdev-dev \
+            libgstreamer1.0-0 \
+            gstreamer1.0-plugins-base \
+            gstreamer1.0-plugins-good \
+            libltdl-dev \
+            libffi-dev \
+            libssl-dev \
             autoconf \
+            automake \
             autoconf-archive \
             libtool \
             libtool-bin \
             pkg-config \
-            cmake
+            cmake \
+            ninja-build \
+            openjdk-17-jdk \
+            unzip \
+            zip
 
       - name: Install Buildozer and dependencies
         run: |
           pip install --upgrade pip
-          pip install buildozer cython
+          pip install buildozer
+          pip install cython==0.29.37
 
       - name: Accept Android SDK licenses
         run: |
-          mkdir -p ~/.android
-          touch ~/.android/repositories.cfg
-          echo "count=0" > ~/.android/repositories.cfg
-          find $HOME/.buildozer -name "sdkmanager" 2>/dev/null | head -1 | xargs -I{} bash -c 'yes | {} --licenses 2>/dev/null || true'
+          mkdir -p ~/.buildozer/android/platform
+          yes | sdkmanager --licenses 2>/dev/null || true
 
       - name: Build with Buildozer
         env:
           ACLOCAL_PATH: /usr/share/aclocal
           ANDROID_SDK_ROOT: /home/runner/.buildozer/android/platform/android-sdk
+          P4A_PYTHON_VERSION: "3.11"
         run: |
           yes | buildozer -v android debug 2>&1 | tee 0_build.txt
           exit ${PIPESTATUS[0]}
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4
         if: success()
+        uses: actions/upload-artifact@v4
         with:
           name: dogrunner-apk
           path: bin/*.apk
 
       - name: Upload Logs
-        uses: actions/upload-artifact@v4
         if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: build-logs
           path: 0_build.txt
