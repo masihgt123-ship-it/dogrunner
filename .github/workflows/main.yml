@@ -7,57 +7,34 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
       - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            python3.11 python3.11-venv python3.11-dev \
             build-essential git zip unzip \
             openjdk-17-jdk ccache \
             libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev \
             libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev \
-            zlib1g-dev \
+            zlib1g-dev libffi-dev libssl-dev \
             libltdl-dev libtool libtool-bin \
             autoconf autoconf-archive automake pkg-config
 
-      - name: Force Python 3.11 as system default
+      - name: Install Buildozer
         run: |
-          sudo rm -f /usr/bin/python3 /usr/local/bin/python3 /usr/local/bin/python
-          sudo rm -f /usr/bin/python /usr/local/bin/python3.14 2>/dev/null || true
-          sudo ln -sf /usr/bin/python3.11 /usr/bin/python3
-          sudo ln -sf /usr/bin/python3.11 /usr/local/bin/python3
-          sudo ln -sf /usr/bin/python3.11 /usr/local/bin/python
-          sudo ln -sf /usr/bin/python3.11 /usr/bin/python
-          python3 --version
           python --version
-          which python3
-
-      - name: Install pip and tools for Python 3.11
-        run: |
-          python3.11 -m ensurepip --upgrade
-          python3.11 -m pip install --upgrade "pip<25.0" virtualenv wheel
-
-      - name: Install Buildozer and dependencies
-        run: |
-          python3.11 -m pip install \
-            "buildozer==1.5.0" \
-            "cython==0.29.37" \
-            "python-for-android==2024.1.21" \
-            "sh>=1.10,<2.0"
-
-      - name: Accept Android SDK licenses
-        run: yes | sdkmanager --licenses 2>/dev/null || true
+          python -m pip install --upgrade pip
+          python -m pip install buildozer "cython<3.0"
 
       - name: Build with Buildozer
         env:
-          ANDROID_SDK_ROOT: /home/runner/.buildozer/android/platform/android-sdk
           P4A_PYTHON_VERSION: "3.11"
-          PYTHON: /usr/bin/python3.11
-          VIRTUALENV_PYTHON: /usr/bin/python3.11
-          PYTHONPATH: ""
         run: |
+          set -o pipefail
           yes | buildozer -v android debug 2>&1 | tee 0_build.txt
-          exit ${PIPESTATUS[0]}
 
       - uses: actions/upload-artifact@v4
         if: success()
