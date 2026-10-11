@@ -21,41 +21,32 @@ jobs:
             libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev \
             libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev \
             zlib1g-dev libgstreamer1.0-0 \
-            libgstreamer-plugins-base1.0-0 \
+            libgstreamer-plugins-base1.0-dev \
             libltdl-dev libtool libtool-bin \
             autoconf autoconf-archive automake pkg-config
 
-      - name: Force Python 3.11 everywhere
+      - name: Force Python 3.11 as system default
         run: |
-          sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 100
-          sudo update-alternatives --set python3 /usr/bin/python3.11
-          sudo ln -sf /usr/bin/python3.11 /usr/local/bin/python3
-          sudo ln -sf /usr/bin/python3.11 /usr/local/bin/python
-          # تأیید که python3.14 دیگه پیش‌فرض نیست
+          # حذف هر symlink موجود
+          sudo rm -f /usr/bin/python3 /usr/local/bin/python3 /usr/local/bin/python
+          # لینک مستقیم به 3.11
+          sudo ln -s /usr/bin/python3.11 /usr/bin/python3
+          sudo ln -s /usr/bin/python3.11 /usr/local/bin/python3
+          sudo ln -s /usr/bin/python3.11 /usr/local/bin/python
           python3 --version
-          which python3
+          python --version
 
-      - name: Install pip for Python 3.11
+      - name: Install pip and tools for Python 3.11
         run: |
           python3.11 -m ensurepip --upgrade
-          python3.11 -m pip install --upgrade "pip<25.0" virtualenv
+          python3.11 -m pip install --upgrade "pip<25.0" virtualenv wheel
 
       - name: Install Buildozer and dependencies
         run: |
-          python3.11 -m pip install buildozer cython
-
-      - name: Patch p4a to force Python 3.11 in Android venv
-        run: |
-          P4A_DIR=$(python3.11 -c "import pythonforandroid, os; print(os.path.dirname(pythonforandroid.__file__))")
-          echo "Patching p4a at: $P4A_DIR"
-          # جایگزینی هر ارجاع به python3 در virtualenv ساختن
-          grep -rl "python3" "$P4A_DIR" --include="*.py" | xargs \
-            sed -i \
-              -e 's|--python=python3|--python=/usr/bin/python3.11|g' \
-              -e "s|executable='python3'|executable='/usr/bin/python3.11'|g" \
-              -e 's|"python3", "-m", "venv"|"/usr/bin/python3.11", "-m", "venv"|g' \
-              -e "s|'python3', '-m', 'venv'|'/usr/bin/python3.11', '-m', 'venv'|g"
-          echo "Patch done."
+          python3.11 -m pip install \
+            "buildozer==1.5.0" \
+            "cython==0.29.37" \
+            "python-for-android==2024.1.21"
 
       - name: Accept Android SDK licenses
         run: yes | sdkmanager --licenses 2>/dev/null || true
@@ -66,6 +57,7 @@ jobs:
           P4A_PYTHON_VERSION: "3.11"
           PYTHON: /usr/bin/python3.11
           VIRTUALENV_PYTHON: /usr/bin/python3.11
+          PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
         run: |
           yes | buildozer -v android debug 2>&1 | tee 0_build.txt
           exit ${PIPESTATUS[0]}
