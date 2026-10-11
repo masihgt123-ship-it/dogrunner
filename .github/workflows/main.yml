@@ -11,6 +11,9 @@ jobs:
     container:
       image: kivy/buildozer:latest
       options: --user root
+    # اضافه کردن این بخش برای اجازه دادن به اجرای root
+    env:
+      BUILDOZER_ALLOW_ROOT: 1
 
     steps:
     - name: Checkout code
