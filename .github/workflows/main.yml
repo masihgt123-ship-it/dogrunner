@@ -20,16 +20,13 @@ jobs:
             openjdk-17-jdk ccache \
             libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev \
             libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev \
-            zlib1g-dev libgstreamer1.0-0 \
-            libgstreamer-plugins-base1.0-dev \
+            zlib1g-dev \
             libltdl-dev libtool libtool-bin \
             autoconf autoconf-archive automake pkg-config
 
       - name: Force Python 3.11 as system default
         run: |
-          # حذف هر symlink موجود
           sudo rm -f /usr/bin/python3 /usr/local/bin/python3 /usr/local/bin/python
-          # لینک مستقیم به 3.11
           sudo ln -s /usr/bin/python3.11 /usr/bin/python3
           sudo ln -s /usr/bin/python3.11 /usr/local/bin/python3
           sudo ln -s /usr/bin/python3.11 /usr/local/bin/python
