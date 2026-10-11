@@ -51,10 +51,6 @@ jobs:
         pip install --upgrade pip
         pip install buildozer cython
 
-    - name: Clean Environment
-      run: |
-        buildozer clean
-
     - name: Build with Buildozer
       run: |
         set -o pipefail
