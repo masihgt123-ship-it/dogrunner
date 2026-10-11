@@ -9,8 +9,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      # استفاده از تگ مشخص‌تر برای ثبات بیشتر
-      image: kivy/buildozer:master 
+      # استفاده از ایمیج master که برای buildozer بهینه‌سازی شده است
+      image: kivy/buildozer:master
       options: --user root
     env:
       BUILDOZER_ALLOW_ROOT: 1
@@ -21,9 +21,9 @@ jobs:
 
     - name: Build with Buildozer
       run: |
-        # پاکسازی کش
+        # حذف کش قبلی برای جلوگیری از تداخل
         rm -rf .buildozer
-        # اجرای بیلد بدون وقفه
+        # اجرای دستور بیلد و تایید خودکار تمامی سوالات با yes
         yes | buildozer android debug
 
     - name: Upload APK
