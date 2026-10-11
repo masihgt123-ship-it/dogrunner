@@ -1,36 +1,33 @@
-name: Build Android APK
+- name: Install system dependencies
+  run: |
+    sudo apt-get update
+    sudo apt-get install -y \
+      python3-pip \
+      build-essential \
+      git \
+      ffmpeg \
+      libsdl2-dev \
+      libsdl2-image-dev \
+      libsdl2-mixer-dev \
+      libsdl2-ttf-dev \
+      libportmidi-dev \
+      libswscale-dev \
+      libavformat-dev \
+      libavcodec-dev \
+      zlib1g-dev \
+      libgstreamer1.0-dev \
+      gstreamer1.0-plugins-base \
+      libmtdev-dev \
+      autoconf \
+      autoconf-archive \
+      libtool \
+      libtool-bin \
+      pkg-config \
+      cmake
 
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Install system dependencies
-      run: |
-        sudo apt-get update
-        # پکیج‌های لازم برای کامپایل کیوی و بیلدوزر بدون پکیج‌های منسوخ
-        sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev build-essential
-        # نصب بیلدوزر و سایتون (استفاده از --break-system-packages برای محیط‌های جدید اوبونتو)
-        pip3 install --upgrade pip buildozer cython --break-system-packages
-
-    - name: Build with Buildozer
-      run: |
-        # اطمینان از قرارگیری بیلدوزر در مسیر اجرایی
-        export PATH=$PATH:~/.local/bin
-        # اجرای بیلد و تأیید خودکار سوالات (yes)
-        yes | buildozer android debug
-
-    - name: Upload APK
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: dogrunner-apk
-        # آپلود فایل خروجی (در صورت موفقیت بیلد)
-        path: bin/*.apk
+- name: Build with Buildozer
+  env:
+    ACLOCAL_PATH: /usr/share/aclocal
+  run: |
+    buildozer -v android debug 2>&1 | tee 0_build.txt
+    exit ${PIPESTATUS[0]}
