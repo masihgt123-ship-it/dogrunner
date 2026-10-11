@@ -23,7 +23,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 cmake libffi-dev libssl-dev
-          # ایجاد یک لینک نمادین (Symlink) برای فریب دادن پکیج‌هایی که دنبال libtinfo5 می‌گردند
           sudo ln -s /lib/x86_64-linux-gnu/libtinfo.so.6 /lib/x86_64-linux-gnu/libtinfo.so.5
 
       - name: Install Buildozer and dependencies
@@ -33,4 +32,16 @@ jobs:
 
       - name: Build with Buildozer
         run: |
-          buildozer -v android debug
+          # اجرای بیلد و ذخیره لاگ در فایلی به نام build_log.txt
+          buildozer -v android debug > build_log.txt 2>&1 || {
+            echo "Build failed! Uploading logs..."
+            cat build_log.txt
+            exit 1
+          }
+
+      - name: Upload Logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: build_log.txt
