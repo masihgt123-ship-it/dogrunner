@@ -8,22 +8,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      # استفاده از ایمیج master که برای buildozer بهینه‌سازی شده است
-      image: kivy/buildozer:master
-      options: --user root
-    env:
-      BUILDOZER_ALLOW_ROOT: 1
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+        pip3 install --user --upgrade buildozer cython
+
     - name: Build with Buildozer
       run: |
-        # حذف کش قبلی برای جلوگیری از تداخل
-        rm -rf .buildozer
-        # اجرای دستور بیلد و تایید خودکار تمامی سوالات با yes
+        export PATH=$PATH:~/.local/bin
+        # اجرای بیلد و تایید خودکار تمامی سوالات
         yes | buildozer android debug
 
     - name: Upload APK
