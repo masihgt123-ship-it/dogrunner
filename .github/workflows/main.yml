@@ -22,29 +22,12 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y \
-          build-essential \
-          git \
-          python3-dev \
-          ffmpeg \
-          libsdl2-dev \
-          libsdl2-image-dev \
-          libsdl2-mixer-dev \
-          libsdl2-ttf-dev \
-          libportmidi-dev \
-          libswscale-dev \
-          libavformat-dev \
-          libavcodec-dev \
-          zlib1g-dev \
-          libgstreamer1.0-dev \
-          gstreamer1.0-plugins-base \
-          gstreamer1.0-plugins-good \
-          libtool \
-          autoconf \
-          automake \
-          libtool-bin \
-          pkg-config \
-          libffi-dev \
-          libssl-dev
+          build-essential git python3-dev ffmpeg libsdl2-dev libsdl2-image-dev \
+          libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev \
+          libavformat-dev libavcodec-dev zlib1g-dev libgstreamer1.0-dev \
+          gstreamer1.0-plugins-base gstreamer1.0-plugins-good libtool \
+          autoconf automake libtool-bin pkg-config libffi-dev libssl-dev \
+          openjdk-17-jdk
 
     - name: Install Buildozer and dependencies
       run: |
@@ -54,7 +37,8 @@ jobs:
     - name: Build with Buildozer
       run: |
         set -o pipefail
-        buildozer -v android debug 2>&1 | tee 0_build.txt
+        # این دستور لایسنس‌های SDK را هم به صورت خودکار قبول می‌کند
+        yes | buildozer -v android debug 2>&1 | tee 0_build.txt
 
     - name: Upload APK
       if: always()
