@@ -51,15 +51,12 @@ jobs:
 
     - name: Build with Buildozer
       run: |
-        # استفاده از tee برای ذخیره همزمان در کنسول و فایل
         buildozer -v android debug 2>&1 | tee 0_build.txt
 
     - name: Upload APK
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: dogrunner-apk
+        name: dogrunner-final-apk
         path: |
-          *.apk
-          bin/*.apk
-          app/*.apk
+          **/*.apk
