@@ -1,27 +1,53 @@
 [app]
+# (str) Title of your application
 title = Dog Runner
+
+# (str) Package name
 package.name = dogrunner
+
+# (str) Package domain
 package.domain = org.test
+
+# (str) Source code where the main.py live
 source.dir = .
+
+# (list) Source files to include (let empty to include all the files)
 source.include_exts = py,png,jpg,kv,atlas
+
+# (list) Application requirements
+# اگر کتابخانه اضافه دارید اینجا اضافه کنید (مثلا: kivy,requests)
+requirements = python3,kivy
+
+# (str) Application versioning
 version = 0.1
-requirements = python3,kivy,pygame
-orientation = portrait
+
+# (list) Permissions
+android.permissions = INTERNET
+
+# (int) Android API to use
+android.api = 33
+
+# (int) Minimum API required
+android.minapi = 21
+
+# (int) Android SDK version to use
+android.sdk = 33
+
+# (str) Android NDK version to use (این نسخه ۲۵b بسیار پایدار است)
+android.ndk = 25b
+
+# (bool) Use --private data storage (True) or --dir (False)
+android.private_storage = True
+
+# (str) The orientation
+orientation = landscape
+
+# (bool) Indicate if the application should be fullscreen
 fullscreen = 1
 
-# اندروید
-android.api = 33
-android.minapi = 21
-android.ndk_api = 21
-android.archs = arm64-v8a
-android.presplash_color = #FFFFFF
-android.skip_update = False
-android.accept_sdk_license = True
-
-# تنظیمات حیاتی برای رفع خطای بیلد
-p4a.branch = develop
-p4a.bootstrap = sdl2
-
 [buildozer]
+# (int) Log level (0 = error only, 1 = info, 2 = debug (with command output))
 log_level = 2
-warn_on_root = 1
+
+# (int) Display build progress in console
+display_overrides = 1
