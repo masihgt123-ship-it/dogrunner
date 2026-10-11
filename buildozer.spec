@@ -1,21 +1,21 @@
 [app]
+# نام برنامه
 title = Dog Runner
 package.name = dogrunner
 package.domain = org.test
-source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
-# اگر کتابخانه‌هایی مثل requests یا ... دارید، حتما اینجا اضافه کنید
-requirements = python3,kivy
 version = 0.1
-android.permissions = INTERNET
-android.api = 33
-android.minapi = 21
-android.sdk = 33
-android.ndk = 25b
-android.private_storage = True
-orientation = landscape
-fullscreen = 1
+
+# کتابخانه‌های مورد نیاز (فقط موارد پایه)
+requirements = python3,kivy
+
+# تنظیمات اصلی
+orientation = portrait
+fullscreen = 0
+android.presplash_color = #FFFFFF
 
 [buildozer]
+# سطح لاگ برای دیباگ (2 یعنی جزئیات بیشتر)
 log_level = 2
-warn_on_root = 1
+# غیرفعال کردن اخطار مربوط به اجرای روت در داکر
+warn_on_root = 0
