@@ -28,50 +28,50 @@ try:
 
     W, H = 900, 550
     WHITE = (255, 255, 255)
-    BLACK = (8, 8, 12)
-    YELLOW = (255, 220, 50)
-    PINK = (220, 100, 120)
+    BLACK = (15, 15, 20)
+    YELLOW = (255, 215, 40)
+    PINK = (240, 110, 130)
 
     GRAVITY = 0.82
-    JUMP = -15.2
+    JUMP = -15.4
     GROUND_Y = 385
     MAX_LEVEL = 15
     FIXED_SPEED = 7.5
 
     LEVELS = {
-        1: {"gap": 430, "ow": 42, "oh": 48, "need": 8},
-        2: {"gap": 400, "ow": 48, "oh": 62, "need": 8},
-        3: {"gap": 375, "ow": 52, "oh": 78, "need": 9},
-        4: {"gap": 350, "ow": 46, "oh": 100, "need": 9},
-        5: {"gap": 335, "ow": 58, "oh": 72, "need": 10},
-        6: {"gap": 320, "ow": 40, "oh": 118, "need": 10},
-        7: {"gap": 305, "ow": 50, "oh": 88, "need": 11},
-        8: {"gap": 290, "ow": 44, "oh": 130, "need": 11},
-        9: {"gap": 280, "ow": 60, "oh": 80, "need": 12},
-        10: {"gap": 265, "ow": 36, "oh": 145, "need": 12},
-        11: {"gap": 255, "ow": 54, "oh": 96, "need": 13},
-        12: {"gap": 245, "ow": 42, "oh": 125, "need": 13},
-        13: {"gap": 235, "ow": 64, "oh": 85, "need": 14},
-        14: {"gap": 225, "ow": 38, "oh": 150, "need": 14},
-        15: {"gap": 210, "ow": 56, "oh": 140, "need": 16},
+        1:  {"gap": 440, "ow": 44, "oh": 50, "need": 7},
+        2:  {"gap": 410, "ow": 48, "oh": 65, "need": 8},
+        3:  {"gap": 385, "ow": 52, "oh": 75, "need": 8},
+        4:  {"gap": 360, "ow": 46, "oh": 95, "need": 9},
+        5:  {"gap": 340, "ow": 56, "oh": 78, "need": 9},
+        6:  {"gap": 325, "ow": 42, "oh": 115, "need": 10},
+        7:  {"gap": 310, "ow": 50, "oh": 88, "need": 10},
+        8:  {"gap": 295, "ow": 44, "oh": 125, "need": 11},
+        9:  {"gap": 280, "ow": 58, "oh": 85, "need": 11},
+        10: {"gap": 265, "ow": 38, "oh": 138, "need": 12},
+        11: {"gap": 255, "ow": 54, "oh": 98, "need": 12},
+        12: {"gap": 245, "ow": 44, "oh": 128, "need": 13},
+        13: {"gap": 235, "ow": 62, "oh": 90, "need": 13},
+        14: {"gap": 225, "ow": 40, "oh": 145, "need": 14},
+        15: {"gap": 210, "ow": 55, "oh": 140, "need": 15},
     }
 
     THEMES = {
-        1: ((135, 206, 235), (90, 160, 105), (46, 168, 72), (28, 120, 48), (120, 72, 32), BLACK, "meadow"),
-        2: ((28, 70, 48), (18, 90, 40), (16, 78, 32), (10, 48, 20), (40, 28, 16), WHITE, "jungle"),
-        3: ((250, 196, 120), (196, 140, 78), (214, 170, 96), (176, 128, 64), (130, 82, 42), BLACK, "desert"),
-        4: ((10, 14, 42), (22, 26, 58), (18, 22, 40), (12, 14, 28), (170, 170, 80), WHITE, "city"),
-        5: ((186, 214, 232), (210, 220, 230), (236, 242, 248), (200, 214, 226), (120, 140, 160), BLACK, "snow"),
-        6: ((78, 22, 16), (48, 18, 16), (36, 16, 14), (22, 10, 10), (96, 28, 16), WHITE, "lava"),
-        7: ((120, 196, 230), (64, 150, 190), (232, 196, 120), (196, 156, 82), (72, 110, 130), BLACK, "beach"),
-        8: ((18, 16, 28), (32, 28, 40), (42, 36, 48), (24, 20, 30), (90, 80, 110), WHITE, "cave"),
-        9: ((232, 150, 90), (170, 90, 40), (150, 78, 32), (110, 52, 22), (90, 42, 18), WHITE, "autumn"),
-        10: ((6, 8, 24), (12, 14, 36), (10, 12, 28), (6, 8, 18), (180, 190, 220), WHITE, "space"),
-        11: ((255, 186, 206), (210, 120, 150), (120, 170, 90), (70, 120, 55), (150, 70, 100), BLACK, "sakura"),
-        12: ((48, 70, 42), (30, 55, 28), (34, 58, 30), (20, 40, 22), (60, 48, 24), WHITE, "swamp"),
-        13: ((150, 190, 220), (90, 130, 170), (180, 210, 230), (120, 160, 190), (70, 110, 150), BLACK, "ice"),
-        14: ((255, 120, 70), (180, 70, 40), (120, 55, 35), (80, 32, 22), (70, 28, 18), WHITE, "canyon"),
-        15: ((28, 18, 48), (70, 40, 90), (40, 24, 64), (22, 12, 40), (230, 190, 70), WHITE, "final"),
+        1:  {"sky": (140, 210, 245), "ground": (65, 165, 80),   "obs": (140, 85, 45),   "name": "meadow"},
+        2:  {"sky": (25, 75, 50),    "ground": (15, 95, 40),    "obs": (75, 45, 20),    "name": "jungle"},
+        3:  {"sky": (255, 205, 130), "ground": (215, 155, 80),  "obs": (50, 135, 55),   "name": "desert"},
+        4:  {"sky": (12, 16, 45),    "ground": (45, 48, 60),    "obs": (160, 50, 50),   "name": "city"},
+        5:  {"sky": (195, 225, 245), "ground": (235, 245, 255), "obs": (110, 150, 180), "name": "snow"},
+        6:  {"sky": (65, 18, 15),    "ground": (40, 15, 15),    "obs": (220, 85, 20),   "name": "lava"},
+        7:  {"sky": (115, 205, 240), "ground": (240, 205, 135), "obs": (205, 120, 50),  "name": "beach"},
+        8:  {"sky": (22, 18, 35),    "ground": (48, 42, 58),    "obs": (160, 75, 220),  "name": "cave"},
+        9:  {"sky": (245, 160, 100), "ground": (165, 85, 35),   "obs": (115, 55, 25),   "name": "autumn"},
+        10: {"sky": (8, 10, 28),     "ground": (35, 40, 65),    "obs": (60, 180, 210),  "name": "space"},
+        11: {"sky": (255, 200, 215), "ground": (110, 160, 80),  "obs": (130, 70, 45),   "name": "sakura"},
+        12: {"sky": (40, 60, 42),    "ground": (32, 52, 28),    "obs": (70, 95, 45),    "name": "swamp"},
+        13: {"sky": (160, 205, 235), "ground": (190, 225, 245), "obs": (115, 175, 220), "name": "ice"},
+        14: {"sky": (255, 130, 80),  "ground": (150, 65, 35),   "obs": (185, 85, 45),   "name": "canyon"},
+        15: {"sky": (30, 20, 55),    "ground": (50, 32, 75),    "obs": (240, 195, 60),  "name": "final"},
     }
 
     def make_sound(path, typ):
@@ -108,7 +108,7 @@ try:
             self.speed = FIXED_SPEED
             self.px = 140.0
             self.py = float(GROUND_Y)
-            self.pw, self.ph = 74, 66
+            self.pw, self.ph = 70, 58
             self.vel = 0.0
             self.transition = False
             self.won = False
@@ -146,7 +146,11 @@ try:
 
         def make_obstacles(self):
             c = self.level_cfg()
-            self.obstacles = [[760 + i * c["gap"], 430, c["ow"], c["oh"]] for i in range(4)]
+            self.obstacles = []
+            cur_x = 850
+            for _ in range(4):
+                self.obstacles.append([cur_x, GROUND_Y - c["oh"] + 54, c["ow"], c["oh"]])
+                cur_x += c["gap"]
 
         def begin_level(self):
             self.px = 140.0
@@ -162,7 +166,7 @@ try:
 
         def jump(self):
             if self.won or self.transition: return
-            if self.py >= GROUND_Y - 1:
+            if self.py >= GROUND_Y - 2:
                 self.vel = JUMP
                 self.play("jump")
 
@@ -213,22 +217,28 @@ try:
 
             cfg = self.level_cfg()
             gap, need = cfg["gap"], cfg["need"]
+            dog_box = (self.px + 10, self.py - self.ph + 10, self.pw - 15, self.ph - 10)
+
             for o in self.obstacles:
                 o[0] -= self.speed
-                hit = (self.px < o[0] + o[2] and self.px + self.pw > o[0] and
-                       self.py < o[1] + o[3] and self.py + self.ph > o[1])
+                hit = (dog_box[0] < o[0] + o[2] and dog_box[0] + dog_box[2] > o[0] and
+                       dog_box[1] < o[1] + o[3] and dog_box[1] + dog_box[3] > o[1])
                 if hit:
                     self.reset_level()
                     break
-                if o[0] + o[2] < -20:
-                    o[0] = max(x[0] for x in self.obstacles) + gap
-                    o[2], o[3] = cfg["ow"], cfg["oh"]
+
+                if o[0] + o[2] < -30:
+                    max_x = max(ob[0] for ob in self.obstacles)
+                    o[0] = max_x + gap
+                    o[2] = cfg["ow"]
+                    o[3] = cfg["oh"]
+                    o[1] = GROUND_Y - cfg["oh"] + 54
                     self.passed += 1
                     self.score += 1
                     if self.passed >= need:
                         if self.level < MAX_LEVEL:
                             self.level += 1
-                            if self.level >= 5:
+                            if self.level in (5, 10, 15):
                                 self.transition = True
                                 self.ttime = 0
                                 self.play("laugh")
@@ -273,7 +283,7 @@ try:
             if len(pts) == 3:
                 Triangle(points=flat)
             else:
-                Line(points=flat, width=1, close=True)
+                Line(points=flat, width=1.5, close=True)
 
         def line(self, c, p1, p2, width):
             s, ox, oy = self.view()
@@ -299,78 +309,240 @@ try:
             self.col(c)
             Rectangle(texture=tex, pos=(gx, gy), size=(tw, th))
 
-        # ==================== سگ خیلی قشنگ‌تر ====================
+        # ==================== سگ دونده اصلاح‌شده رو به جلو ====================
         def dog(self, x, y):
             t = self.tick
-            wag = math.sin(t * 0.28) * 18
-            ear = math.sin(t * 0.35) * 3
+            in_air = self.py < GROUND_Y - 2
+            wag = math.sin(t * 0.45) * 12
+            leg1 = math.sin(t * 0.4) * 8 if not in_air else -6
+            leg2 = -leg1 if not in_air else 4
 
-            self.ellipse((30, 30, 30), x + 8, y - 6, 62, 14, 0.35)
-            self.line((180, 120, 70), (x + 20, y + 34), (x - 18, y + 18 + wag), 11)
-            self.line((225, 170, 110), (x + 20, y + 34), (x - 16, y + 20 + wag), 6)
-            self.ellipse((230, 175, 115), x + 8, y + 24, 58, 40)
-            self.ellipse((210, 155, 95), x + 12, y + 26, 48, 32)
-            self.polygon((185, 115, 70), [(x + 14, y + 56), (x + 24, y + 82 + ear), (x + 36, y + 56)])
-            self.polygon((185, 115, 70), [(x + 40, y + 56), (x + 50, y + 82 + ear), (x + 62, y + 56)])
-            self.polygon((255, 180, 190), [(x + 20, y + 60), (x + 26, y + 74), (x + 32, y + 60)])
-            self.polygon((255, 180, 190), [(x + 44, y + 60), (x + 50, y + 74), (x + 56, y + 60)])
-            self.ellipse((230, 175, 115), x + 18, y + 28, 46, 42)
-            self.ellipse((255, 255, 255), x + 24, y + 40, 16, 18)
-            self.ellipse((255, 255, 255), x + 46, y + 40, 16, 18)
-            self.ellipse((40, 40, 40), x + 28, y + 44, 7, 9)
-            self.ellipse((40, 40, 40), x + 50, y + 44, 7, 9)
-            self.ellipse((255, 255, 255), x + 29, y + 45, 3, 3)
-            self.ellipse((255, 255, 255), x + 51, y + 45, 3, 3)
-            self.ellipse((50, 50, 50), x + 42, y + 32, 9, 7)
-            self.ellipse((255, 120, 150), x + 34, y + 18, 18, 14)
-            self.ellipse((185, 115, 70), x + 12, y - 2, 20, 24)
-            self.ellipse((185, 115, 70), x + 44, y - 2, 20, 24)
+            # سایه زیر پاها
+            if not in_air:
+                self.ellipse((20, 20, 25), x + 8, GROUND_Y + 44, 60, 10, 0.35)
 
-        # ==================== گربه خاکستری ====================
+            # دم پشت سر (سمت چپ چون سگ رو به راست می‌دود)
+            self.line((185, 120, 60), (x + 8, y + 15), (x - 14, y + 5 + wag), 7)
+
+            # پاهای عقب (تیره تر)
+            self.ellipse((170, 110, 55), x + 12 + leg2, y + 26, 12, 22)
+            self.ellipse((170, 110, 55), x + 46 - leg2, y + 26, 12, 22)
+
+            # بدن سگ
+            self.ellipse((230, 170, 105), x + 6, y + 8, 54, 34)
+            self.ellipse((255, 230, 185), x + 18, y + 16, 32, 22)
+
+            # پاهای جلو (روشن تر)
+            self.ellipse((210, 150, 85), x + 18 + leg1, y + 27, 12, 22)
+            self.ellipse((210, 150, 85), x + 50 - leg1, y + 27, 12, 22)
+
+            # گردن و سر (در سمت راست، بالاتر از بدن)
+            self.ellipse((230, 170, 105), x + 40, y - 10, 36, 34)
+
+            # گوش آویزان
+            ear_sway = math.sin(t * 0.35) * 3
+            self.polygon((160, 95, 45), [
+                (x + 45, y - 8),
+                (x + 36, y + 10 + ear_sway),
+                (x + 52, y + 2)
+            ])
+
+            # پوزه و بینی رو به جلو (راست)
+            self.ellipse((250, 205, 155), x + 58, y - 3, 20, 16)
+            self.ellipse((35, 30, 30), x + 72, y - 5, 8, 7) # بینی مشکی
+
+            # چشم براق
+            self.ellipse(WHITE, x + 54, y - 8, 12, 13)
+            self.ellipse((30, 30, 45), x + 58, y - 7, 6, 7)
+            self.ellipse(WHITE, x + 60, y - 8, 2.5, 2.5)
+
+            # قلاده قرمز زیبا
+            self.rect((220, 45, 55), x + 43, y + 14, 15, 6, radius=2)
+            self.ellipse(YELLOW, x + 49, y + 18, 5, 5)
+
+        # ==================== گربه شیطون ترنزیشن ====================
         def cat(self, x, y):
-            c = (95, 90, 100)
-            c2 = (65, 60, 70)
-            self.ellipse((20, 20, 20), x - 70, y + 55, 140, 30, 0.3)
-            self.ellipse(c, x - 75, y + 85, 150, 140)
-            self.ellipse(c, x - 55, y + 40, 110, 100)
-            self.polygon(c2, [(x - 50, y + 95), (x - 35, y + 145), (x - 5, y + 100)])
-            self.polygon(c2, [(x + 5, y + 100), (x + 35, y + 145), (x + 50, y + 95)])
-            self.ellipse((255, 230, 80), x - 38, y + 65, 26, 34)
-            self.ellipse((255, 230, 80), x + 12, y + 65, 26, 34)
-            self.ellipse((30, 30, 30), x - 28, y + 72, 8, 18)
-            self.ellipse((30, 30, 30), x + 22, y + 72, 8, 18)
-            self.polygon((255, 150, 170), [(x - 6, y + 95), (x + 6, y + 95), (x, y + 105)])
-            tail = math.sin(self.ttime * 0.15) * 25
-            self.line(c2, (x + 70, y + 140), (x + 115 + tail, y + 170), 14)
+            c = (90, 85, 95)
+            c2 = (60, 55, 65)
+            self.ellipse((20, 20, 25), x - 65, y + 115, 130, 24, 0.3)
+            self.ellipse(c, x - 55, y + 35, 110, 85)
+            self.ellipse(c, x - 42, y - 15, 84, 70)
+            self.polygon(c2, [(x - 38, y - 10), (x - 28, y - 40), (x - 8, y - 14)])
+            self.polygon(c2, [(x + 8, y - 14), (x + 28, y - 40), (x + 38, y - 10)])
+            self.ellipse((255, 235, 80), x - 28, y - 2, 22, 26)
+            self.ellipse((255, 235, 80), x + 6, y - 2, 22, 26)
+            self.ellipse((25, 25, 25), x - 18, y + 2, 7, 18)
+            self.ellipse((25, 25, 25), x + 14, y + 2, 7, 18)
+            self.polygon((255, 140, 165), [(x - 6, y + 20), (x + 6, y + 20), (x, y + 28)])
+            tail = math.sin(self.ttime * 0.16) * 30
+            self.line(c2, (x - 50, y + 70), (x - 95 + tail, y + 50), 12)
 
-        def obstacle(self, o, color):
+        # ==================== مانع‌های متنوع با استایل هر تم ====================
+        def obstacle(self, o, color, theme_name):
             x, y, w, h = o
-            dark = tuple(max(0, v - 55) for v in color)
-            light = tuple(min(255, v + 45) for v in color)
-            self.rect(dark, x + 5, y + 8, w, h, 10)
-            self.rect(color, x, y, w, h, 10)
-            self.rect(light, x + 6, y + 10, max(8, w * 0.3), h - 16, 5)
-            self.rect(dark, x, y, w, 12, 5)
+            dark = tuple(max(0, v - 50) for v in color)
+            light = tuple(min(255, v + 50) for v in color)
 
-        def draw_background(self, theme):
-            sky, ground, _, _, _, _, name = theme
+            if theme_name in ("meadow", "jungle", "swamp"):
+                # تنه درخت و برگ‌های روی آن
+                self.rect(color, x + 4, y, w - 8, h, radius=6)
+                self.rect(dark, x + 8, y + 4, w - 16, h - 8, radius=4)
+                self.ellipse((40, 150, 60), x - 4, y - 10, w + 8, 20)
+            elif theme_name == "desert":
+                # کاکتوس
+                self.rect((45, 155, 60), x + w * 0.3, y, w * 0.4, h, radius=8)
+                self.rect((45, 155, 60), x, y + h * 0.35, w, 14, radius=6)
+                self.rect((45, 155, 60), x, y + h * 0.18, 12, h * 0.22, radius=5)
+                self.rect((45, 155, 60), x + w - 12, y + h * 0.25, 12, h * 0.22, radius=5)
+            elif theme_name in ("cave", "ice"):
+                # قندیل و کریستال نوک‌تیز
+                self.polygon(light, [(x, y + h), (x + w // 2, y), (x + w, y + h)])
+                self.polygon(color, [(x + 4, y + h), (x + w // 2, y + 8), (x + w - 4, y + h)])
+            else:
+                # موانع کلاسیک شیک با سایه روشن
+                self.rect(dark, x + 3, y + 3, w, h, radius=8)
+                self.rect(color, x, y, w, h, radius=8)
+                self.rect(light, x + 5, y + 6, max(6, w * 0.26), h - 12, radius=4)
+
+        # ==================== تمام ۱۵ تم با جزییات کامل ====================
+        def draw_background(self, th):
+            name = th["name"]
+            sky, ground = th["sky"], th["ground"]
             self.rect(sky, 0, 0, W, H)
-            self.rect(ground, 0, 430, W, 120)
+
+            t = self.tick
 
             if name == "meadow":
-                self.rect((70, 150, 60), 50, 410, 120, 30)
-                self.rect((70, 150, 60), 300, 400, 180, 40)
-            elif name == "desert":
-                self.ellipse((220, 180, 100), 200, 420, 180, 25)
-            elif name == "snow":
-                self.rect((240, 245, 255), 0, 430, W, 120)
-            elif name == "final":
-                self.rect((50, 30, 80), 0, 430, W, 120)
+                # خورشید و ابرهای دشت
+                self.ellipse((255, 230, 80), 730, 60, 75, 75)
+                self.ellipse(WHITE, 120, 80, 110, 45, 0.8)
+                self.ellipse(WHITE, 450, 110, 140, 50, 0.7)
+                # تپه‌های سبز پشت
+                self.ellipse((50, 140, 65), -50, 310, 480, 220)
+                self.ellipse((58, 155, 75), 350, 320, 600, 200)
 
-            if name in ["meadow", "beach", "autumn"]:
-                self.ellipse((255, 230, 80), 750, 80, 55, 55)
-            elif name in ["space", "cave", "final"]:
-                self.ellipse((240, 240, 255), 750, 70, 45, 45)
+            elif name == "jungle":
+                # درخت‌های متراکم جنگل استوایی
+                self.rect((18, 55, 30), 0, 180, W, 250)
+                for tx in (80, 280, 520, 750):
+                    self.rect((55, 35, 15), tx + 20, 240, 24, 200)
+                    self.ellipse((20, 110, 45), tx - 30, 160, 125, 110)
+                    self.ellipse((10, 90, 35), tx - 15, 120, 95, 80)
+
+            elif name == "desert":
+                # آفتاب کویر و تپه‌های شنی چند لایه
+                self.ellipse((255, 220, 110), 720, 50, 85, 85)
+                self.ellipse((235, 175, 95), -80, 330, 520, 180)
+                self.ellipse((220, 160, 85), 320, 320, 650, 190)
+
+            elif name == "city":
+                # آسمان‌خراش‌های نورانی و ماه شبانه
+                self.ellipse((240, 240, 250), 750, 50, 60, 60)
+                bldgs = [(30, 160, 90), (140, 210, 110), (270, 140, 85), (380, 250, 120),
+                         (520, 180, 100), (640, 230, 130), (790, 150, 85)]
+                for bx, by, bw in bldgs:
+                    self.rect((24, 28, 48), bx, by, bw, 440 - by)
+                    # پنجره‌های روشن
+                    for wx in range(bx + 12, bx + bw - 15, 22):
+                        for wy in range(by + 16, 420, 28):
+                            self.rect((245, 215, 90), wx, wy, 10, 14, 2, 0.85)
+
+            elif name == "snow":
+                # دانه‌های برف و تپه‌های یخ‌زده
+                self.ellipse((245, 250, 255), 100, 310, 500, 200)
+                self.ellipse((230, 238, 250), 480, 330, 500, 180)
+                # بارش برف
+                for i in range(16):
+                    sx = (i * 59 + t * 2) % W
+                    sy = (i * 37 + t * 3) % 430
+                    self.ellipse(WHITE, sx, sy, 6, 6, 0.75)
+                # آدم برفی در پس‌زمینه
+                self.ellipse(WHITE, 700, 360, 48, 48)
+                self.ellipse(WHITE, 708, 335, 32, 32)
+                self.ellipse((240, 120, 30), 720, 348, 8, 5)
+
+            elif name == "lava":
+                # آتشفشان و گدازه‌ها
+                self.polygon((45, 18, 18), [(60, 440), (230, 180), (400, 440)])
+                self.polygon((55, 22, 22), [(460, 440), (660, 210), (860, 440)])
+                # گدازه دهانه آتشفشان
+                self.ellipse((255, 90, 20), 215, 175, 30, 15)
+                self.ellipse((255, 90, 20), 645, 205, 30, 15)
+
+            elif name == "beach":
+                # ساحل دریا، آب و نخل
+                self.rect((60, 160, 225), 0, 330, W, 100) # آب دریا
+                self.ellipse(WHITE, 0, 328, W, 10, 0.4)    # کف موج دریا
+                self.ellipse((255, 220, 80), 720, 50, 80, 80) # خورشید تابستانی
+                # درخت نخل
+                self.rect((110, 70, 30), 120, 250, 16, 180)
+                self.ellipse((40, 160, 60), 60, 220, 135, 45)
+
+            elif name == "cave":
+                # قندیل‌های سقف غار
+                for cx in range(0, W, 70):
+                    h_c = 45 + (cx % 3) * 20
+                    self.polygon((35, 30, 48), [(cx, 0), (cx + 35, h_c), (cx + 70, 0)])
+                # کریستال درخشان زمین
+                self.polygon((180, 80, 255), [(220, 440), (230, 390), (240, 440)])
+                self.polygon((130, 60, 230), [(660, 440), (672, 380), (684, 440)])
+
+            elif name == "autumn":
+                # درختان خزان و برگ‌های نارنجی
+                self.ellipse((255, 180, 60), 750, 60, 70, 70)
+                for tx in (120, 400, 720):
+                    self.rect((90, 50, 25), tx + 20, 260, 20, 170)
+                    self.ellipse((220, 95, 30), tx - 30, 160, 120, 110)
+                    self.ellipse((245, 150, 40), tx - 10, 190, 80, 75)
+
+            elif name == "space":
+                # ستاره‌های چشمک‌زن و سیاره زحل
+                for i in range(25):
+                    sx = (i * 73) % W
+                    sy = (i * 41) % 400
+                    r = 3 if i % 2 == 0 else 5
+                    self.ellipse(WHITE, sx, sy, r, r, 0.8)
+                # سیاره بزرگ و حلقه‌دار
+                self.ellipse((215, 120, 80), 680, 90, 75, 75)
+                self.ellipse((240, 190, 130), 645, 118, 145, 20, 0.6)
+
+            elif name == "sakura":
+                # شکوفه‌های صورتی ژاپنی
+                self.ellipse((255, 235, 220), 750, 50, 70, 70)
+                for tx in (100, 460, 760):
+                    self.rect((75, 45, 30), tx + 18, 250, 20, 180)
+                    self.ellipse((255, 160, 185), tx - 35, 140, 130, 115)
+                    self.ellipse((255, 195, 210), tx - 15, 160, 90, 85)
+
+            elif name == "swamp":
+                # درختان مرموز مرداب
+                self.rect((25, 42, 25), 0, 360, W, 80)
+                for tx in (160, 550):
+                    self.rect((45, 38, 24), tx + 15, 220, 25, 210)
+                    self.ellipse((35, 80, 40), tx - 30, 140, 120, 95)
+
+            elif name == "ice":
+                # کوه‌های عظیم یخ (Iceberg)
+                self.polygon((180, 220, 245), [(100, 440), (250, 170), (420, 440)])
+                self.polygon((210, 240, 255), [(350, 440), (520, 210), (690, 440)])
+
+            elif name == "canyon":
+                # دیواره‌های لایه‌لایه سرخ‌رنگ دره گرند کانیون
+                self.ellipse((255, 110, 60), 740, 60, 75, 75)
+                self.rect((170, 70, 40), 0, 270, 280, 170)
+                self.rect((195, 85, 45), 260, 320, 300, 120)
+                self.rect((150, 60, 35), 540, 240, 360, 200)
+
+            elif name == "final":
+                # کهکشان نهایی و ستون‌های باستانی
+                self.ellipse((255, 215, 60), 450, 80, 90, 90)
+                for px in (90, 280, 620, 810):
+                    self.rect((90, 60, 120), px, 210, 35, 230)
+                    self.rect((140, 90, 170), px - 10, 195, 55, 20)
+
+            # زمین مشترک هر تم
+            self.rect(ground, 0, 440, W, 110)
+            self.rect((0, 0, 0), 0, 440, W, 4, a=0.2) # خط لبه زمین
 
         def draw(self):
             self.canvas.clear()
@@ -379,43 +551,49 @@ try:
                 Rectangle(pos=self.pos, size=self.size)
 
                 if self.won:
-                    self.rect((20, 15, 40), 0, 0, W, H)
-                    self.ellipse((255, 215, 90), 450, 160, 70, 70)
-                    self.text("YOU WIN!", 78, YELLOW, W // 2, 260, True)
-                    self.text("Score: %d" % self.score, 38, WHITE, W // 2, 340, True)
-                    self.text("Tap to play again", 30, WHITE, W // 2, 410, True)
+                    self.rect((15, 10, 30), 0, 0, W, H)
+                    self.ellipse((255, 215, 90), 450, 140, 80, 80)
+                    self.text("YOU WIN!", 76, YELLOW, W // 2, 250, True)
+                    self.text("Total Score: %d" % self.score, 36, WHITE, W // 2, 330, True)
+                    self.text("Tap anywhere to play again!", 26, WHITE, W // 2, 400, True)
                     return
 
                 if self.transition:
-                    self.rect((10, 10, 20), 0, 0, W, H)
-                    walk = math.sin(self.ttime * 0.11) * 95
+                    self.rect((12, 10, 22), 0, 0, W, H)
+                    walk = math.sin(self.ttime * 0.12) * 110
                     cat_x = W // 2 + walk
-                    cy = 195 + int(math.sin(self.ttime * 0.09) * 10)
+                    cy = 210 + int(math.sin(self.ttime * 0.1) * 8)
                     self.cat(cat_x, cy)
-                    self.text("HAHAHAHA!", 58, WHITE, W // 2, 390, True)
+                    self.text("HAHAHAHA!", 56, WHITE, W // 2, 380, True)
                     if self.ttime > 35:
-                        self.text("MEOW!", 44, YELLOW, W // 2 + 130, 330, True)
-                    if self.ttime > 75:
-                        self.text("RUN DOGGY!", 38, WHITE, W // 2 - 110, 460, True)
-                    self.text("LEVEL %d" % self.level, 38, YELLOW, W // 2, 510, True)
+                        self.text("MEOW! YOU CANNOT PASS!", 38, YELLOW, W // 2, 440, True)
+                    self.text("LEVEL %d" % self.level, 36, (120, 230, 140), W // 2, 495, True)
                     return
 
-                theme = self.theme()
-                self.draw_background(theme)
-                self.dog(self.px, self.py)
+                th = self.theme()
+                self.draw_background(th)
+
+                # رسم موانع
                 for o in self.obstacles:
-                    if -80 < o[0] < W + 40:
-                        self.obstacle(o, (95, 95, 95))
+                    if -80 < o[0] < W + 50:
+                        self.obstacle(o, th["obs"], th["name"])
 
+                # رسم سگ
+                self.dog(self.px, self.py)
+
+                # دکمه پرش زیبا (پایین سمت راست)
                 b = self.jump_btn
-                self.rect((35, 35, 42), b[0] + 5, b[1] + 5, b[2], b[3], 18)
-                self.rect((255, 200, 50), b[0], b[1], b[2], b[3], 18)
-                self.text("JUMP", 34, BLACK, b[0] + 48, b[1] + 24)
+                self.rect((25, 25, 30), b[0] + 4, b[1] + 4, b[2], b[3], 18, 0.4)
+                self.rect((255, 195, 45), b[0], b[1], b[2], b[3], 18)
+                self.rect((255, 225, 120), b[0] + 6, b[1] + 6, b[2] - 12, 16, 8, 0.5)
+                self.text("JUMP", 32, BLACK, b[0] + 46, b[1] + 24)
 
-                self.rect((0, 0, 0), 12, 12, 260, 100, 14, 0.4)
-                self.text("Score  %d" % self.score, 28, WHITE, 30, 30)
-                self.text("Level  %d / %d" % (self.level, MAX_LEVEL), 28, WHITE, 30, 58)
-                self.text("%d / %d" % (self.passed, self.level_cfg()["need"]), 24, YELLOW, 30, 86)
+                # پنل امتیاز و مرحله (بالا سمت چپ)
+                self.rect((0, 0, 0), 14, 14, 250, 95, 14, 0.45)
+                self.text("Score: %d" % self.score, 24, WHITE, 28, 26)
+                self.text("Level: %d / %d" % (self.level, MAX_LEVEL), 24, WHITE, 28, 54)
+                cfg = self.level_cfg()
+                self.text("Progress: %d / %d" % (self.passed, cfg["need"]), 20, YELLOW, 28, 80)
 
     class DogRunnerApp(App):
         def build(self):
