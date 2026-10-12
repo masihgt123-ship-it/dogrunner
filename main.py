@@ -8,7 +8,6 @@ ERROR_TEXT = None
 
 
 def show_fatal(text):
-    # Fallback screen: shows any error text on the phone.
     try:
         from kivy.app import App
         from kivy.uix.label import Label
@@ -16,7 +15,7 @@ def show_fatal(text):
         class ErrorApp(App):
             def build(self):
                 return Label(text=text, font_size="12sp",
-                              halign="left", valign="top")
+                             halign="left", valign="top")
 
         ErrorApp().run()
     except Exception:
@@ -50,8 +49,19 @@ try:
 
     GRAVITY = 0.8
     JUMP = -15
-    DISTANCE = 400
     GROUND_Y = 385
+    MAX_LEVEL = 6
+
+    # speed = سرعت شروع، gap = فاصله مانع‌ها
+    # ow/oh = عرض و ارتفاع مانع، need = چند مانع برای رفتن به مرحله بعد
+    LEVELS = {
+        1: {"speed": 7, "gap": 400, "ow": 45, "oh": 50, "need": 10},
+        2: {"speed": 8, "gap": 360, "ow": 50, "oh": 70, "need": 10},
+        3: {"speed": 9, "gap": 330, "ow": 55, "oh": 90, "need": 12},
+        4: {"speed": 10, "gap": 300, "ow": 48, "oh": 115, "need": 12},
+        5: {"speed": 11, "gap": 280, "ow": 62, "oh": 85, "need": 14},
+        6: {"speed": 12, "gap": 250, "ow": 40, "oh": 135, "need": 14},
+    }
 
     def make_sound(path, typ):
         rate = 22050
@@ -83,7 +93,7 @@ try:
             self.level = 1
             self.score = 0
             self.passed = 0
-            self.speed = 7
+            self.speed = LEVELS[1]["speed"]
             self.px = 120.0
             self.py = float(GROUND_Y)
             self.pw, self.ph = 70, 65
@@ -101,7 +111,9 @@ try:
 
             Clock.schedule_interval(self.update, 1 / 60.0)
 
-        # ---------- sound ----------
+        def level_cfg(self):
+            return LEVELS.get(self.level, LEVELS[MAX_LEVEL])
+
         def _load_sounds(self, d):
             try:
                 for name in ("jump", "hit", "laugh"):
@@ -120,18 +132,21 @@ try:
                 except Exception:
                     pass
 
-        # ---------- game ----------
         def make_obstacles(self):
-            self.obstacles = [[700 + i * DISTANCE, 430, 45, 50]
+            c = self.level_cfg()
+            self.obstacles = [[700 + i * c["gap"], 430, c["ow"], c["oh"]]
                               for i in range(3)]
 
-        def reset_level(self):
+        def begin_level(self):
             self.px = 120.0
             self.py = float(GROUND_Y)
             self.vel = 0.0
             self.passed = 0
-            self.speed = 7
+            self.speed = self.level_cfg()["speed"]
             self.make_obstacles()
+
+        def reset_level(self):
+            self.begin_level()
             self.play("hit")
 
         def jump(self):
@@ -182,12 +197,7 @@ try:
                 if self.ttime >= 180:
                     self.transition = False
                     self.ttime = 0
-                    self.px = 120.0
-                    self.py = float(GROUND_Y)
-                    self.vel = 0.0
-                    self.passed = 0
-                    self.speed = 7
-                    self.make_obstacles()
+                    self.begin_level()
                 self.draw()
                 return
 
@@ -204,6 +214,8 @@ try:
                 self.py = float(GROUND_Y)
                 self.vel = 0.0
 
+            gap = self.level_cfg()["gap"]
+            need = self.level_cfg()["need"]
             for o in self.obstacles:
                 o[0] -= self.speed
                 if (self.px < o[0] + o[2] and self.px + self.pw > o[0]
@@ -212,19 +224,18 @@ try:
                     self.reset_level()
                     break
                 if o[0] + o[2] < 0:
-                    o[0] = max(x[0] for x in self.obstacles) + DISTANCE
+                    o[0] = max(x[0] for x in self.obstacles) + gap
                     self.passed += 1
                     self.score += 1
                     if self.passed % 4 == 0:
                         self.speed += 2
-                    if self.passed >= 10 and self.level < 3:
+                    if self.passed >= need and self.level < MAX_LEVEL:
                         self.level += 1
                         self.transition = True
                         self.ttime = 0
                         self.play("laugh")
             self.draw()
 
-        # ---------- drawing helpers ----------
         def view(self):
             s = min(self.width / W, self.height / H)
             ox = (self.width - W * s) / 2 + self.x
@@ -297,7 +308,6 @@ try:
             self.col(c)
             Rectangle(texture=tex, pos=(gx, gy), size=(tw, th))
 
-        # ---------- scenes ----------
         def dog(self, x, y):
             self.line(DOGDARK, (x + 15, y + 32), (x - 5, y + 12), 8)
             self.ellipse(DOG, x + 10, y + 25, 50, 32)
@@ -355,8 +365,7 @@ try:
             self.rect((245, 190, 120), 0, 0, W, H)
             self.circle((255, 220, 70), 760, 90, 65)
             self.polygon((190, 125, 75), [(0, 360), (180, 220), (330, 360)])
-            self.polygon((175, 110, 65), [(280, 360), (500, 180),
-                                          (730, 360)])
+            self.polygon((175, 110, 65), [(280, 360), (500, 180), (730, 360)])
             self.rect(SAND, 0, 360, W, 190)
             for x in range(0, W, 180):
                 self.arc_top((170, 120, 60), x, 400, 160, 50, 4)
@@ -365,6 +374,35 @@ try:
                 self.rect(green, x, 300, 25, 100)
                 self.rect(green, x - 25, 325, 25, 15)
                 self.rect(green, x + 25, 345, 25, 15)
+
+        def level4(self):
+            self.rect((12, 18, 48), 0, 0, W, H)
+            self.circle((230, 230, 210), 150, 90, 36)
+            self.rect((25, 28, 45), 0, 430, W, 120)
+            for x, bh in ((40, 220), (160, 280), (300, 190),
+                          (470, 320), (640, 240), (790, 300)):
+                self.rect((35, 40, 70), x, 430 - bh, 90, bh)
+                for wy in range(430 - bh + 20, 420, 40):
+                    self.rect(YELLOW, x + 15, wy, 16, 18)
+                    self.rect(YELLOW, x + 50, wy, 16, 18)
+
+        def level5(self):
+            self.rect((190, 215, 230), 0, 0, W, H)
+            self.circle(WHITE, 760, 80, 40)
+            self.polygon((210, 220, 230), [(0, 340), (160, 180), (340, 340)])
+            self.polygon((200, 210, 225), [(360, 350), (560, 160), (760, 350)])
+            self.rect((235, 240, 245), 0, 430, W, 120)
+            for x in (80, 260, 520, 760):
+                self.circle((150, 170, 185), x, 400, 28)
+
+        def level6(self):
+            self.rect((70, 20, 15), 0, 0, W, H)
+            self.circle((255, 120, 30), 700, 110, 70)
+            self.polygon((40, 20, 20), [(0, 360), (140, 160), (300, 360)])
+            self.polygon((55, 25, 20), [(250, 370), (480, 140), (700, 370)])
+            self.rect((30, 20, 20), 0, 430, W, 120)
+            for x in range(30, W, 140):
+                self.ellipse((255, 90, 20), x, 445, 70, 28)
 
         def draw(self):
             self.canvas.clear()
@@ -386,15 +424,16 @@ try:
                                   W // 2, 230, True)
                     return
 
-                if self.level == 1:
-                    self.level1()
-                    ocol, tcol = BROWN, BLACK
-                elif self.level == 2:
-                    self.level2()
-                    ocol, tcol = DARKBROWN, WHITE
-                else:
-                    self.level3()
-                    ocol, tcol = (125, 80, 45), BLACK
+                colors = {
+                    1: (self.level1, BROWN, BLACK),
+                    2: (self.level2, DARKBROWN, WHITE),
+                    3: (self.level3, (125, 80, 45), BLACK),
+                    4: (self.level4, (180, 180, 70), WHITE),
+                    5: (self.level5, (120, 140, 160), BLACK),
+                    6: (self.level6, (90, 30, 20), WHITE),
+                }
+                scene, ocol, tcol = colors.get(self.level, colors[MAX_LEVEL])
+                scene()
 
                 self.dog(self.px, self.py)
                 for o in self.obstacles:
