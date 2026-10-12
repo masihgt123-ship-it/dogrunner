@@ -51,16 +51,17 @@ try:
     JUMP = -15
     GROUND_Y = 385
     MAX_LEVEL = 6
+    SPEED = 7
 
-    # speed = سرعت شروع، gap = فاصله مانع‌ها
+    # gap = فاصله مانع‌ها
     # ow/oh = عرض و ارتفاع مانع، need = چند مانع برای رفتن به مرحله بعد
     LEVELS = {
-        1: {"speed": 7, "gap": 400, "ow": 45, "oh": 50, "need": 10},
-        2: {"speed": 8, "gap": 360, "ow": 50, "oh": 70, "need": 10},
-        3: {"speed": 9, "gap": 330, "ow": 55, "oh": 90, "need": 12},
-        4: {"speed": 10, "gap": 300, "ow": 48, "oh": 115, "need": 12},
-        5: {"speed": 11, "gap": 280, "ow": 62, "oh": 85, "need": 14},
-        6: {"speed": 12, "gap": 250, "ow": 40, "oh": 135, "need": 14},
+        1: {"gap": 400, "ow": 45, "oh": 50, "need": 10},
+        2: {"gap": 360, "ow": 50, "oh": 70, "need": 10},
+        3: {"gap": 330, "ow": 55, "oh": 90, "need": 12},
+        4: {"gap": 300, "ow": 48, "oh": 115, "need": 12},
+        5: {"gap": 280, "ow": 62, "oh": 85, "need": 14},
+        6: {"gap": 250, "ow": 40, "oh": 135, "need": 14},
     }
 
     def make_sound(path, typ):
@@ -93,7 +94,7 @@ try:
             self.level = 1
             self.score = 0
             self.passed = 0
-            self.speed = LEVELS[1]["speed"]
+            self.speed = SPEED
             self.px = 120.0
             self.py = float(GROUND_Y)
             self.pw, self.ph = 70, 65
@@ -142,7 +143,7 @@ try:
             self.py = float(GROUND_Y)
             self.vel = 0.0
             self.passed = 0
-            self.speed = self.level_cfg()["speed"]
+            self.speed = SPEED
             self.make_obstacles()
 
         def reset_level(self):
@@ -227,8 +228,6 @@ try:
                     o[0] = max(x[0] for x in self.obstacles) + gap
                     self.passed += 1
                     self.score += 1
-                    if self.passed % 4 == 0:
-                        self.speed += 2
                     if self.passed >= need and self.level < MAX_LEVEL:
                         self.level += 1
                         self.transition = True
