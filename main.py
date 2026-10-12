@@ -27,7 +27,7 @@ try:
     from kivy.app import App
     from kivy.clock import Clock
     from kivy.core.audio import SoundLoader
-    from kivy.core.label import Label as CoreLabel
+    from kivy.core.text import Label as CoreLabel
     from kivy.core.window import Window
     from kivy.graphics import (Color, Ellipse, Line, Rectangle,
                                RoundedRectangle, Triangle)
