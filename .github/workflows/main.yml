@@ -40,7 +40,7 @@ jobs:
         run: |
           set -o pipefail
           java -version
-          yes | buildozer -v android debug 2>&1 | tee 0_build.txt
+          buildozer -v android debug 2>&1 | tee 0_build.txt
 
       - uses: actions/upload-artifact@v4
         if: success()
