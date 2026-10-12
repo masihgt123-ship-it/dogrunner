@@ -7,7 +7,8 @@ from kivy.app import App
 from kivy.clock import Clock
 from kivy.core.audio import SoundLoader
 from kivy.core.label import Label as CoreLabel
-from kivy.graphics import (Color, Ellipse, Line, Rectangle,
+from kivy.core.window import Window
+from kivy.graphics import (Color, Ellipse, Line, Mesh, Rectangle,
                            RoundedRectangle, Triangle)
 from kivy.uix.widget import Widget
 
@@ -141,6 +142,22 @@ class Game(Widget):
         return True
 
     def update(self, dt):
+        try:
+            self._update(dt)
+        except Exception:
+            import traceback
+            Clock.unschedule(self.update)
+            self.show_error(traceback.format_exc())
+
+    def show_error(self, msg):
+        from kivy.uix.label import Label
+        self.canvas.clear()
+        self.clear_widgets()
+        self.add_widget(Label(text=msg, font_size="12sp", pos=self.pos,
+                              size=self.size, text_size=self.size,
+                              halign="left", valign="top"))
+
+    def _update(self, dt):
         if self.transition:
             self.ttime += 1
             if self.ttime >= 180:
@@ -370,7 +387,13 @@ class Game(Widget):
 class DogRunnerApp(App):
     def build(self):
         self.title = "Dog Runner"
-        return Game(self.user_data_dir)
+        try:
+            return Game(self.user_data_dir)
+        except Exception:
+            import traceback
+            from kivy.uix.label import Label
+            return Label(text=traceback.format_exc(), font_size="12sp",
+                         text_size=(Window.width, None), halign="left")
 
 
 if __name__ == "__main__":
