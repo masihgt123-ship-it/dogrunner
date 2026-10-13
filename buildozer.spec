@@ -5,7 +5,9 @@ package.domain = org.test
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 version = 0.1
+
 icon.filename = %(source.dir)s/icon.png
+presplash.filename = %(source.dir)s/dog_runner_presplash.png
 
 requirements = python3==3.11.5,hostpython3==3.11.5,kivy==2.3.0
 
