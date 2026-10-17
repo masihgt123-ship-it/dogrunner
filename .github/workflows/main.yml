@@ -1,39 +1,114 @@
-name: Create Signing Key
+name: Build Signed Android APK
 
 on:
+  push:
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  create-key:
+  build:
     runs-on: ubuntu-22.04
 
     steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "17"
 
-      - name: Generate signing key
-        env:
-          KEYSTORE_PASSWORD: ${{ secrets.HECTOR }}
-          KEY_PASSWORD: ${{ secrets.HECTOR2 }}
+      - name: Install system dependencies
         run: |
-          keytool -genkeypair \
-            -keystore dogrunner.jks \
-            -storetype JKS \
-            -alias dogrunner \
-            -keyalg RSA \
-            -keysize 2048 \
-            -validity 10000 \
-            -storepass:env KEYSTORE_PASSWORD \
-            -keypass:env KEY_PASSWORD \
-            -dname "CN=Dog Runner"
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential git zip unzip \
+            ccache \
+            libsdl2-dev libsdl2-image-dev \
+            libsdl2-mixer-dev libsdl2-ttf-dev \
+            libportmidi-dev libswscale-dev \
+            libavformat-dev libavcodec-dev \
+            zlib1g-dev libffi-dev libssl-dev \
+            libltdl-dev libtool libtool-bin \
+            autoconf autoconf-archive automake pkg-config
 
-      - uses: actions/upload-artifact@v4
+      - name: Install Buildozer
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install buildozer "cython<3.0"
+
+      - name: Configure release APK
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path("buildozer.spec")
+          text = path.read_text()
+
+          settings = {
+              "android.api": "35",
+              "android.release_artifact": "apk",
+          }
+
+          for key, value in settings.items():
+              pattern = rf"(?m)^\s*{re.escape(key)}\s*=.*$"
+              line = f"{key} = {value}"
+              if re.search(pattern, text):
+                  text = re.sub(pattern, line, text)
+              else:
+                  text = text.replace("[app]", "[app]\n" + line, 1)
+
+          path.write_text(text)
+          PY
+
+      - name: Restore signing key
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          umask 077
+          printf '%s' "$KEYSTORE_BASE64" \
+            | base64 --decode > "$RUNNER_TEMP/dogrunner.jks"
+          test -s "$RUNNER_TEMP/dogrunner.jks"
+
+      - name: Build signed release
+        env:
+          P4A_RELEASE_KEYSTORE: ${{ runner.temp }}/dogrunner.jks
+          P4A_RELEASE_KEYSTORE_PASSWD: ${{ secrets.HECTOR }}
+          P4A_RELEASE_KEYALIAS: dogrunner
+          P4A_RELEASE_KEYALIAS_PASSWD: ${{ secrets.HECTOR2 }}
+        run: |
+          set -o pipefail
+          buildozer -v android release 2>&1 | tee 0_build.txt
+
+      - name: Verify APK signature
+        run: |
+          APK=$(find bin -maxdepth 1 -name '*.apk' -print -quit)
+          test -n "$APK"
+          APKSIGNER=$(find "$HOME/.buildozer" \
+            -type f -name apksigner | sort -V | tail -n 1)
+          test -n "$APKSIGNER"
+          "$APKSIGNER" verify --verbose "$APK"
+
+      - name: Upload signed APK
+        uses: actions/upload-artifact@v4
         with:
-          name: dogrunner-signing-key
-          path: dogrunner.jks
-          retention-days: 1
+          name: dogrunner-release-apk
+          path: bin/*.apk
+          if-no-files-found: error
+
+      - name: Upload build logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: build-logs
+          path: 0_build.txt
+
+      - name: Remove signing key
+        if: always()
+        run: rm -f "$RUNNER_TEMP/dogrunner.jks"
