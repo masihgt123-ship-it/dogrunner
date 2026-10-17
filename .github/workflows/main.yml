@@ -18,8 +18,8 @@ jobs:
 
       - name: Generate signing key
         env:
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          KEYSTORE_PASSWORD: ${{ secrets.HECTOR }}
+          KEY_PASSWORD: ${{ secrets.HECTOR2 }}
         run: |
           keytool -genkeypair \
             -keystore dogrunner.jks \
