@@ -2,8 +2,10 @@
 title = Dog Runner
 package.name = dogrunner
 package.domain = org.test
+
 source.dir = .
-source.include_exts = py,png,jpg,kv,atlas
+source.include_exts = py,png,jpg,jpeg,kv,atlas,wav,ttf
+
 version = 0.1
 
 icon.filename = %(source.dir)s/icon.png
@@ -13,8 +15,8 @@ requirements = python3==3.11.5,hostpython3==3.11.5,kivy==2.3.0
 
 orientation = landscape
 fullscreen = 1
-android.presplash_color = #FFFFFF
 
+android.presplash_color = #FFFFFF
 android.api = 33
 android.minapi = 24
 android.ndk = 25b
