@@ -1,7 +1,7 @@
 [app]
 title = Dog Runner
 package.name = dogrunner
-package.domain = org.test
+package.domain = com.masihgames
 
 source.dir = .
 source.include_exts = py,png,jpg,jpeg,kv,atlas,wav,ttf
