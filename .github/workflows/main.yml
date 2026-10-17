@@ -1,55 +1,39 @@
-name: Build Android APK
-on: [push, workflow_dispatch]
+name: Create Signing Key
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  build:
+  create-key:
     runs-on: ubuntu-22.04
+
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "17"
 
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            build-essential git zip unzip \
-            ccache \
-            libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev \
-            libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev \
-            zlib1g-dev libffi-dev libssl-dev \
-            libltdl-dev libtool libtool-bin \
-            autoconf autoconf-archive automake pkg-config
-
-      - name: Install Buildozer
-        run: |
-          python --version
-          python -m pip install --upgrade pip
-          python -m pip install buildozer "cython<3.0"
-
-      - name: Build with Buildozer
+      - name: Generate signing key
         env:
-          P4A_PYTHON_VERSION: "3.11"
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          set -o pipefail
-          java -version
-          buildozer -v android debug 2>&1 | tee 0_build.txt
+          keytool -genkeypair \
+            -keystore dogrunner.jks \
+            -storetype JKS \
+            -alias dogrunner \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -storepass:env KEYSTORE_PASSWORD \
+            -keypass:env KEY_PASSWORD \
+            -dname "CN=Dog Runner"
 
       - uses: actions/upload-artifact@v4
-        if: success()
         with:
-          name: dogrunner-apk
-          path: bin/*.apk
-
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: build-logs
-          path: 0_build.txt
+          name: dogrunner-signing-key
+          path: dogrunner.jks
+          retention-days: 1
