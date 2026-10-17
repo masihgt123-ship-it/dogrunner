@@ -133,24 +133,42 @@ try:
 
     def make_sound(path, typ):
         rate = 22050
-        length = 1.0 if typ == "laugh" else 0.25
+        length = (
+            0.16 if typ == "coin"
+            else 1.0 if typ == "laugh"
+            else 0.25
+        )
         data = bytearray()
+        samples = int(rate * length)
 
-        for i in range(int(rate * length)):
+        for i in range(samples):
             t = i / rate
-            if typ == "jump":
-                freq, vol = 450 + 900 * t, 0.30
-            elif typ == "hit":
-                freq, vol = 220 - 140 * t, 0.45
-            elif typ == "win":
-                freq, vol = 520 + 240 * t, 0.35
-            elif typ == "coin":
-                freq, vol = 1050 + 1800 * t, 0.20
-            else:
-                freq = 450 if int(t * 9) % 2 == 0 else 300
-                vol = 0.35
 
-            v = math.sin(2 * math.pi * freq * t) * vol
+            if typ == "coin":
+                # Soft ding with a smooth attack and fade-out.
+                attack = min(1.0, t / 0.006)
+                release = min(
+                    1.0, (samples - 1 - i) / (rate * 0.025)
+                )
+                envelope = attack * release * math.exp(-20 * t)
+                tone = (
+                    math.sin(2 * math.pi * 880 * t)
+                    + 0.22 * math.sin(2 * math.pi * 1320 * t)
+                ) / 1.22
+                v = tone * envelope * 0.18
+            else:
+                if typ == "jump":
+                    freq, vol = 450 + 900 * t, 0.30
+                elif typ == "hit":
+                    freq, vol = 220 - 140 * t, 0.45
+                elif typ == "win":
+                    freq, vol = 520 + 240 * t, 0.35
+                else:
+                    freq = 450 if int(t * 9) % 2 == 0 else 300
+                    vol = 0.35
+
+                v = math.sin(2 * math.pi * freq * t) * vol
+
             data += struct.pack("<h", int(v * 32767))
 
         with wave.open(path, "wb") as f:
@@ -229,8 +247,6 @@ try:
 
         def make_coins(self):
             # Exactly level * 5 coins per level attempt.
-            # Ground coins are placed between obstacles;
-            # airborne coins are placed above obstacles.
             cfg = self.level_cfg()
             count = self.level * 5
             self.coin_total = count
@@ -248,7 +264,6 @@ try:
                         + cfg["ow"] / 2
                     )
                     y = min(315, GROUND_Y - cfg["oh"] + 28)
-                    # Spread adjacent airborne coins slightly.
                     x += fraction * 45
                 else:
                     x = (
@@ -268,8 +283,7 @@ try:
             self.passed = 0
             self.speed = FIXED_SPEED
 
-            # Roll back this attempt's gains on collision,
-            # preventing repeated collection from the same attempt.
+            # Restore these values if the attempt fails.
             self.start_score = self.score
             self.start_coins = self.coins
 
@@ -324,8 +338,7 @@ try:
 
         def update(self, dt):
             try:
-                # Fixed simulation steps keep speed consistent
-                # across screens with different refresh rates.
+                # Fixed simulation steps keep speed consistent.
                 self.accumulator += min(dt, 0.1)
                 while self.accumulator >= 1 / 60.0:
                     self.step()
@@ -373,7 +386,6 @@ try:
 
             cfg = self.level_cfg()
 
-            # Aligned with the drawn dog's actual body.
             dog_box = (
                 self.px + 10,
                 self.py - 8,
@@ -666,7 +678,10 @@ try:
                 ])
 
             elif name == "mushroom":
-                self.rect((185, 170, 220), x + 8, y + 12, w - 16, h - 12, 6)
+                self.rect(
+                    (185, 170, 220), x + 8, y + 12,
+                    w - 16, h - 12, 6,
+                )
                 self.ellipse(color, x - 5, y - 5, w + 10, 32)
                 self.ellipse(WHITE, x + 5, y + 2, 8, 8)
                 self.ellipse(WHITE, x + w - 15, y + 8, 7, 7)
@@ -696,7 +711,9 @@ try:
                     )
                 elif name == "candy":
                     for offset in range(12, h - 8, 22):
-                        self.rect(WHITE, x + 3, y + offset, w - 6, 7, 3)
+                        self.rect(
+                            WHITE, x + 3, y + offset, w - 6, 7, 3
+                        )
 
         def draw_background(self, theme):
             name = theme["name"]
@@ -735,7 +752,8 @@ try:
                     for wx in range(x + 12, x + width - 15, 22):
                         for wy in range(y + 16, 420, 28):
                             self.rect(
-                                (245, 215, 90), wx, wy, 10, 14, 2, 0.85
+                                (245, 215, 90), wx, wy,
+                                10, 14, 2, 0.85,
                             )
 
             elif name == "snow":
@@ -833,8 +851,12 @@ try:
             elif name == "mushroom":
                 for i, x in enumerate((70, 240, 450, 650, 820)):
                     y = 290 + (i % 2) * 35
-                    self.rect((130, 140, 190), x + 22, y, 20, 150, 8)
-                    self.ellipse((115, 65, 180), x - 20, y - 35, 105, 60)
+                    self.rect(
+                        (130, 140, 190), x + 22, y, 20, 150, 8
+                    )
+                    self.ellipse(
+                        (115, 65, 180), x - 20, y - 35, 105, 60
+                    )
                     for dx in (0, 30, 55):
                         self.ellipse(
                             (140, 245, 235), x + dx, y - 20, 10, 10
@@ -862,7 +884,9 @@ try:
                 for i in range(30):
                     x = (i * 47 - t * 5) % W
                     y = (i * 31 + t * 10) % 430
-                    self.line((135, 175, 215), (x, y), (x - 8, y + 20), 1)
+                    self.line(
+                        (135, 175, 215), (x, y), (x - 8, y + 20), 1
+                    )
                 if t % 210 < 10:
                     self.line(YELLOW, (650, 140), (615, 210), 5)
                     self.line(YELLOW, (615, 210), (650, 205), 5)
@@ -872,9 +896,15 @@ try:
                 self.ellipse((240, 210, 145), 740, 65, 75, 75)
                 for i, x in enumerate((60, 240, 480, 730)):
                     top = 230 + (i % 2) * 45
-                    self.rect((145, 130, 100), x, top, 45, 440 - top)
-                    self.rect((175, 160, 120), x - 10, top - 15, 65, 20)
-                    self.rect((110, 105, 75), x + 8, top + 20, 7, 100)
+                    self.rect(
+                        (145, 130, 100), x, top, 45, 440 - top
+                    )
+                    self.rect(
+                        (175, 160, 120), x - 10, top - 15, 65, 20
+                    )
+                    self.rect(
+                        (110, 105, 75), x + 8, top + 20, 7, 100
+                    )
                 self.rect((155, 140, 105), 60, 215, 225, 20)
 
             elif name == "factory":
@@ -889,17 +919,25 @@ try:
                             55 + i * 12, 40, 0.4,
                         )
                     for dx in (20, 75, 130):
-                        self.rect((255, 180, 70), x + dx, 320, 30, 40, 3)
+                        self.rect(
+                            (255, 180, 70), x + dx, 320, 30, 40, 3
+                        )
 
             elif name == "bamboo":
                 self.ellipse((210, 235, 190), 720, 70, 80, 80)
                 for i in range(12):
                     x = i * 83
                     top = 100 + (i % 3) * 40
-                    self.rect((45, 120, 65), x, top, 15, 440 - top, 5)
+                    self.rect(
+                        (45, 120, 65), x, top, 15, 440 - top, 5
+                    )
                     for y in range(top + 30, 430, 45):
-                        self.rect((95, 160, 85), x - 2, y, 19, 5, 2)
-                        self.ellipse((45, 140, 65), x + 4, y - 22, 45, 13)
+                        self.rect(
+                            (95, 160, 85), x - 2, y, 19, 5, 2
+                        )
+                        self.ellipse(
+                            (45, 140, 65), x + 4, y - 22, 45, 13
+                        )
 
             elif name == "pirate":
                 self.rect((40, 140, 195), 0, 315, W, 125)
@@ -935,8 +973,14 @@ try:
                 self.ellipse(theme["sky"], 710, 52, 75, 75)
                 for x in (70, 260, 490, 740):
                     self.rect((30, 20, 45), x, 210, 22, 230)
-                    self.line((30, 20, 45), (x + 10, 270), (x - 35, 210), 10)
-                    self.line((30, 20, 45), (x + 10, 290), (x + 60, 220), 10)
+                    self.line(
+                        (30, 20, 45),
+                        (x + 10, 270), (x - 35, 210), 10,
+                    )
+                    self.line(
+                        (30, 20, 45),
+                        (x + 10, 290), (x + 60, 220), 10,
+                    )
                     self.ellipse((180, 80, 230), x + 2, 330, 5, 5)
                     self.ellipse((180, 80, 230), x + 12, 330, 5, 5)
 
@@ -949,7 +993,9 @@ try:
                         (x - 10, 180), (x + 32, 115),
                         (x + 75, 180),
                     ])
-                    self.rect((90, 55, 100), x + 20, 230, 25, 45, 10)
+                    self.rect(
+                        (90, 55, 100), x + 20, 230, 25, 45, 10
+                    )
                 self.rect((100, 60, 70), 410, 330, 80, 110, 30)
 
             self.rect(theme["ground"], 0, 440, W, 110)
@@ -964,7 +1010,9 @@ try:
 
                 if self.won:
                     self.rect((15, 10, 30), 0, 0, W, H)
-                    self.text("YOU WIN!", 72, YELLOW, W / 2, 100, True)
+                    self.text(
+                        "YOU WIN!", 72, YELLOW, W / 2, 100, True
+                    )
                     self.text(
                         "All 25 levels completed!", 30,
                         WHITE, W / 2, 205, True,
